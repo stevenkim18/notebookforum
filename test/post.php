@@ -34,7 +34,7 @@
     <h2>제목 : <?= $row['title']?></h2>
     <p>내용 :  <?= $row['content']?></p>
     <a href="edit.php?id=<?=$_GET['id']?>">수정</a>
-    <a href="#">삭제</a> <br>
+    <a href="delete_action.php?id=<?=$_GET['id']?>">삭제</a> <br>
     <a href="index.php">뒤로가기</a>
 
 </body>
