@@ -1,37 +1,17 @@
-<?php
-    // DB 연결을 위한 변수들
-    $server_name = "192.168.0.56";      //ip 주소
-    $user_name = "a11882";              //db 아이디
-    $password = "Rlatmddn18!";          //db 비번
-    $db_name = "test";                  //사용하고자 하는 db 이름
-
-    // DB에 저장하기 위한 변수들
-    $title = $_POST['title'];
-    echo $title."<br>";
-    $content = $_POST['content'];
-    echo $content."<br>";
-
-    // DB 연결
-    // <mysqli_connect 의 기능>
-    // 1. mysql 를 monitor 로 들어 갈때 아이디와 비번 입력.
-    // 2. 사용하고 싶은 데이터 베이스를 선택 ex) use database;
-    $conn = mysqli_connect($server_name, $user_name, $password, $db_name);
-
-    // db에 insert 퀴리문 작성
-    // VALUES 뒤에 한글이나 영어를 넣고 싶으면 변수에 '' 를 넣어야 함.
-    // 출처: https://stackoverflow.com/questions/13725969/mysql-wont-insert-text-only-numbers
-    $insert_query = "INSERT INTO board (title, content, created_date) VALUES ('$title', '$content', NOW())";
-    echo $insert_query."<br>";
-
-    // db에 insert 쿼리문 실행
-    $result = mysqli_query($conn, $insert_query);
-
-    if($result === false){
-        echo "실패";
-        error_log(mysqli_connect_error($conn));
-    }
-    else{
-        echo "성공";
-    }
-
-?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>글쓰기</title>
+</head>
+<body>
+    <h2>글쓰기</h2>
+    <!-- post 방식으로 write.php에 넘김 -->
+    <form action="write_action.php" method="post">
+        <p>제목: <input type="text" name="title" placeholder="제목"></p>
+        <p>내용: <input type="text" name="content" placeholder="내용"></p>
+        <p><input type="submit" value="글 올리기"></p>
+        <p><a href="index.php">뒤로가기</a></p>
+    </form>
+</body>
+</html>
