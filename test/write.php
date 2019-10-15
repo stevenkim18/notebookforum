@@ -18,7 +18,9 @@
     $conn = mysqli_connect($server_name, $user_name, $password, $db_name);
 
     // db에 insert 퀴리문 작성
-    $insert_query = "INSERT INTO board (title, content, created_date) VALUES ($title, $content, NOW())";
+    // VALUES 뒤에 한글이나 영어를 넣고 싶으면 변수에 '' 를 넣어야 함.
+    // 출처: https://stackoverflow.com/questions/13725969/mysql-wont-insert-text-only-numbers
+    $insert_query = "INSERT INTO board (title, content, created_date) VALUES ('$title', '$content', NOW())";
     echo $insert_query."<br>";
 
     // db에 insert 쿼리문 실행
