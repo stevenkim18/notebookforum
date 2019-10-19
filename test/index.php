@@ -37,19 +37,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>게시판</title>
+    <title>노트북포럼</title>
+    <link rel="stylesheet" type="text/css" href="../semantic/semantic.css">
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="../semantic/semantic.js"></script>
+
 </head>
 <body>
-    <h2>게시판</h2>
-
-    <table border="1">
-        <tr>
-            <td>id</td>
-            <td>제목</td>
-            <td>날짜</td>
-        </tr>
-        <?=$list?>
-    </table>
+    <div class="ui container center aligned">
+        <h2>자유게시판</h2>
+    </div>
+    <div class="ui container">
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>제목</th>
+                <th>날짜</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?=$list?>
+            </tbody>
+        </table>
+    </div>
 
     <a href="write.php">글쓰기</a>
 </body>
