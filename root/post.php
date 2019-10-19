@@ -1,32 +1,15 @@
 <?php
-    // include --> 외부에서 파일을 불러옴. 불러온 파일이 없어도 실행 (require : 파일이 없으면 에러)
-    //
     include "../db.php";
 
-    // 내림 차순으로 정렬(최신글이 맨 위로 가게 하기 위해서)
-    $select_query = "SELECT * from board ORDER BY id DESC";
+    // url로 넘겨 받은 id 찾음
+    $select_query = "SELECT * from board WHERE id={$_GET['id']}";
+
     $sql = mq($select_query);
-    //echo $sql;
 
-    $list = '';
+    // 찾아온 db 정보들을 연관 배열 형식으로 저장
+    $board = $sql->fetch_array();
 
-    // db에 자료가 없을 때까지 while 문 실행
-    // $board 에 연관 배열 형태로 db의 데이터들을 저장
-    while ($board = $sql->fetch_array()){
-
-        // echo $board; --> ArrayArrayArrayArrayArrayArrayArray
-
-        // table에 뿌려줄 html 태그를 생성해서 list에 저장
-        $list = $list."<tr>
-                            <td>{$board['id']}</td>
-                            <td><a href='post.php?id={$board['id']}'>{$board['title']}</a></td>
-                            <td>{$board['name']}</td>
-                            <td>{$board['created_date']}</td>
-                            <td>{$board['views']}</td>
-                       </tr>";
-    }
-
-     // echo $list; id 제목 내용 날짜 조회수 순으로 데이터가 출력 됨.
+    // echo $board['title'];
 
 ?>
 
@@ -42,7 +25,7 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
           crossorigin="anonymous">
 
-    <title>노트북포럼:자유게시판</title>
+    <title>Document</title>
 </head>
 <body>
     <!--상단 네비게이션 바
@@ -74,7 +57,7 @@
                 <a class="nav-item nav-link" href="info.php">노트북 정보</a>
                 <a class="nav-item nav-link" href="#">노트북 리뷰</a>
                 <a class="nav-item nav-link" href="#">노트북 중고거래</a>
-                <a class="nav-item nav-link active" href="">자유게시판</a>
+                <a class="nav-item nav-link active" href="board.php">자유게시판</a>
                 <a class="nav-item nav-link" href="news.php">뉴스</a>
                 <a class="nav-item nav-link" href="#">오픈채팅</a>
             </div>
@@ -86,48 +69,64 @@
     </nav>
 
     <div class="container">
-
         <!--제목-->
-        <h1 class="mt-5">자유게시판</h1>
+        <h2 class="mt-5"><?=$board['title']?></h2>
+        <!--작성자-->
+        <h5 class="ml-2 mb-1"><?=$board['name']?></h5>
+        <!--게시물 작성 날짜-->
+        <h6 class="text-right text-muted mr-2"><?=$board['created_date']?></h6>
+        <!--조회수-->
+        <h6 class="text-right text-muted mr-2">조회수 <?=$board['views']?></h6>
 
-        <hr class="mt-2">
+        <hr class="mb-4">
 
-        <a href="write.php"><button type="button" class="btn btn-success float-right mb-2">글쓰기</button></a>
+        <!--내용-->
+        <div class="container">
+            <p>
+                <?=$board['content']?>
+            </p>
+        </div>
 
-        <table class="table table-striped">
-            <!--목차-->
-            <thead>
-            <tr>
-                <th scope="col" style="width: 8%">#</th>
-                <th scope="col" style="width: 55%">제목</th>
-                <th scope="col" style="width: 15%">닉네임</th>
-                <th scope="col" style="width: 15%">작성일</th>
-                <th scope="col" style="width: 8%">조회수</th>
-            </tr>
-            </thead>
-            <!--내용-->
-            <tbody>
-                <?= $list ?>
-            </tbody>
-        </table>
+        <hr class="my-4">
 
-        <!--페이지-->
-        <ul class="pagination justify-content-center my-4">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
+        <div class="container">
+            <div class="float-right">
+                <a href="#"><button type="button" class="btn btn-success m-1">수정</button></a>
+                <a href="#"><button type="button" class="btn btn-danger m-1">삭제</button></a>
+            </div>
+        </div>
+
+        <br><br>
+
+        <div class="container bg-light" style="padding: 10px">
+            <h5 class="my-2">댓글</h5>
+
+            <!--댓글입력 창-->
+            <form>
+                <div class="input-group mb-4">
+                    <input type="text" class="form-control" placeholder="댓글을 입력해주세요">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary" type="button">등록</button>
+                    </div>
+                </div>
+            </form>
+
+            <!--댓글 내용-->
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="float-right">
+                        <a href="#"><button type="button" class="btn btn-sm btn-link">수정</button></a>
+                        <a href="#"><button type="button" class="btn btn-sm btn-link">삭제</button></a>
+                    </div>
+                    <h6 class="card-subtitle text-muted">김승우</h6>
+                    <p class="card-text">댓글 내용</p>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+
 
 
 

@@ -63,7 +63,7 @@
 
         <hr class="mt-2">
 
-        <form>
+        <form action="write/write_action.php" method="post">
             <div class="form-group">
                 <label>닉네임</label>
                 <input type="text" name="name" class="form-control" placeholder="닉네임을 입력하세요" required>
