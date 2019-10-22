@@ -8,7 +8,7 @@
     $sql = mq($select_query);
     //echo $sql;
 
-    $list = '';
+    /*$list = '';
 
     // db에 자료가 없을 때까지 while 문 실행
     // $board 에 연관 배열 형태로 db의 데이터들을 저장
@@ -24,9 +24,81 @@
                             <td>{$board['created_date']}</td>
                             <td>{$board['views']}</td>
                        </tr>";
-    }
+    }*/
 
      // echo $list; id 제목 내용 날짜 조회수 순으로 데이터가 출력 됨.
+
+    //echo "받아온 페이지 숫자".$_GET['page'];
+
+    //페이징
+    // url 받은 page 값이 있으면
+    if(isset($_GET['page'])){
+        $page = $_GET['page'];
+    }
+    // 없으면 (처음에 자유게시판을 들어오면 페이지가 1로 보이기 때문)
+    else{
+        $page = 1;
+    }
+
+   //echo "<br>페이지 숫자".$page;
+
+
+    // 전체 행의 개수를 저장
+    $total_post_num = mysqli_num_rows($sql);
+    //echo "<br>총 게시물 수".$total_post_num;
+
+    $one_page_post_num = 10; // 한 페이지 보여줄 개시물의 개수(10개씩)
+    $one_block_page_num = 10; // 한 블록에 보여줄 페이지의 개수(1~10, 11~20....)
+
+    $current_block_num = ceil($page/$one_block_page_num); // 현재 블록의 위치 ex) 1일 경우 1~10 페이지에 있음
+    //ceil --> 소수점 올림
+    //echo "<br> 현재 블록 위치".$current_block_num;
+    
+    $start_page_num = ($current_block_num-1) * 10 + 1; // 블록 시작 번호 1~10페이지를 보여줄 떄 1
+    //echo "<br> 블록 시작 번호".$start_page_num;
+    
+    $end_page_num = $current_block_num * 10; // 블록 끝 번호 1~10페이지를 보여줄 때 10
+    //echo "<br>블록 끝 번호".$end_page_num;
+
+    $total_page_num = ceil($total_post_num/$one_page_post_num); // 페이지의 개수
+    //echo "<br> 페이지 수".$total_page_num;
+
+    $total_block_num = ceil($total_page_num/$one_block_page_num);   // 블럭의 개수
+    //echo "<br> 블럭 수".$total_block_num;
+
+    // 마지막 블럭 일때
+    // 마지막 블럭 마지막 페이지는 페이징 한 페이지의 수
+    if($end_page_num > $total_page_num){
+        $end_page_num = $total_page_num;
+    }
+
+    // sql 문에서 게시글 데이터를 불러 올떄 시작이 되는 인덱스의 수
+    // 0부터 시작함으로 1번~10번 게시물을 가지고 오려면 sql에서는 0~9의 게시물을 가지고 와야 함.
+    $start_post_num = ($page-1) * $one_page_post_num;
+
+    //페이징한 데이터들을 db에서 불러오기
+    $select_query = "SELECT * from board ORDER BY id DESC LIMIT {$start_post_num}, {$one_page_post_num}";
+
+    $sql = mq($select_query);
+
+    $list ='';
+
+    // 한페이지의 게시물을 저장하는
+    $post_count=0;
+
+    while ($board = $sql->fetch_array()){
+        $list = $list."<tr>
+                            <td>{$board['id']}</td>  
+                            <td><a href='post.php?id={$board['id']}'>{$board['title']}</a></td>  
+                            <td>{$board['name']}</td>  
+                            <td>{$board['created_date']}</td>  
+                            <td>{$board['views']}</td>      
+                       </tr>";
+        $post_count++;
+    }
+    //echo $post_count;
+
+    // 하단 페이지 번호
 
 ?>
 
@@ -113,19 +185,71 @@
 
         <!--페이지-->
         <ul class="pagination justify-content-center my-4">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
+            <!--이전버튼-->
+            <?php
+                if($current_block_num == 1) {
+                    ?>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="board.php?page=<?= $start_page_num - 1 ?>" aria-label="이전">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <?php
+                }
+                else {
+                    ?>
+                    <li class="page-item">
+                        <a class="page-link" href="board.php?page=<?= $start_page_num - 1 ?>" aria-label="이전">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+
+                    <?php
+                }
+                // 페이지 숫자
+                for($page_num = $start_page_num; $page_num <= $end_page_num; $page_num++) {
+                    if($page == $page_num) {
+                        ?>
+
+                        <!--현재페이지-->
+                        <li class="page-item active"><a class="page-link" href="#"><?=$page_num?></a></li>
+
+                        <?php
+                    }
+                    else {
+                        ?>
+                        <!--나머지 페이지-->
+                        <li class="page-item"><a class="page-link" href="board.php?page=<?=$page_num?>"><?= $page_num ?></a></li>
+
+                        <?php
+                    }
+                }
+            ?>
+
+            <!--다음버튼-->
+            <?php
+                // 마지막 블럭 일때
+                if($total_block_num == $current_block_num) {
+                    ?>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="board.php?page=<?=$end_page_num+1?>" aria-label="다음">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <?php
+                }
+                // 아닐때
+                else {
+                    ?>
+                    <li class="page-item">
+                        <a class="page-link" href="board.php?page=<?=$end_page_num+1?>" aria-label="다음">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <?php
+                }
+            ?>
         </ul>
     </div>
 
