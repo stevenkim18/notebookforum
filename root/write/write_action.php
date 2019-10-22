@@ -3,6 +3,8 @@
 
     include "../../db.php";
 
+    //echo $_SERVER['REQUEST_METHOD'];
+
     $title = $_POST['title'];
     $content= $_POST['content'];
     $name = $_POST['name'];
