@@ -1,4 +1,5 @@
 <?php
+
     include "../db.php";
 
     // url로 넘겨 받은 id 찾음
@@ -9,10 +10,7 @@
     // 찾아온 db 정보들을 연관 배열 형식으로 저장
     $board = $sql->fetch_array();
 
-    // echo $board['title'];
-
 ?>
-
 <!doctype html>
 <html lang="ko">
 <head>
@@ -25,7 +23,7 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
           crossorigin="anonymous">
 
-    <title>Document</title>
+    <title>노트북포럼:글쓰기</title>
 </head>
 <body>
     <!--상단 네비게이션 바
@@ -69,67 +67,32 @@
     </nav>
 
     <div class="container">
+
         <!--제목-->
-        <h2 class="mt-5"><?=$board['title']?></h2>
-        <!--작성자-->
-        <h5 class="ml-2 mb-1"><?=$board['name']?></h5>
-        <!--게시물 작성 날짜-->
-        <h6 class="text-right text-muted mr-2"><?=$board['created_date']?></h6>
-        <!--조회수-->
-        <h6 class="text-right text-muted mr-2">조회수 <?=$board['views']?></h6>
+        <h1 class="mt-5">게시글 수정</h1>
 
-        <hr class="mb-4">
+        <hr class="mt-2">
 
-        <!--내용-->
-        <div class="container">
-            <p>
-                <?=$board['content']?>
-            </p>
-        </div>
-
-        <hr class="my-4">
-
-        <div class="container">
-            <div class="float-right">
-                <form method="post" action="delete/delete_action.php">
-                    <a href="edit.php?id=<?=$board['id']?>"><button type="button" class="btn btn-success m-1">수정</button></a>
-                    <!--http method delete 넘겨줌-->
-                    <input type="hidden" name="REQUEST_METHOD" value="DELETE">
-                    <!--삭제하기 위해서 아이디 값을 넘겨줌-->
-                    <input type="hidden" name="id" value="<?=$board['id']?>">
-                    <input type="submit" class="btn btn-danger" value="삭제">
-                </form>
-                <!--<a href="#"><button type="button" class="btn btn-danger m-1">삭제</button></a>-->
+        <form action="edit/edit_action.php" method="post">
+            <div class="form-group">
+                <label>닉네임</label>
+                <input type="text" name="name" class="form-control" placeholder="닉네임을 입력하세요" value="<?=$board['name']?>" required>
             </div>
-        </div>
-
-        <br><br>
-
-        <div class="container bg-light" style="padding: 10px">
-            <h5 class="my-2">댓글</h5>
-
-            <!--댓글입력 창-->
-            <form>
-                <div class="input-group mb-4">
-                    <input type="text" class="form-control" placeholder="댓글을 입력해주세요">
-                    <div class="input-group-append">
-                        <button class="btn btn-secondary" type="button">등록</button>
-                    </div>
-                </div>
-            </form>
-
-            <!--댓글 내용-->
-            <div class="card mb-3">
-                <div class="card-body">
-                    <div class="float-right">
-                        <a href="#"><button type="button" class="btn btn-sm btn-link">수정</button></a>
-                        <a href="#"><button type="button" class="btn btn-sm btn-link">삭제</button></a>
-                    </div>
-                    <h6 class="card-subtitle text-muted">김승우</h6>
-                    <p class="card-text">댓글 내용</p>
-                </div>
+            <div class="form-group">
+                <label>제목</label>
+                <input type="text" name="title" class="form-control" placeholder="제목을 입력하세요" value="<?=$board['title']?>" required>
             </div>
-        </div>
+            <div class="form-group">
+                <label>내용</label>
+                <textarea class="form-control" name="content" rows="15" placeholder="내용을 입력하세요" required><?=$board['content']?></textarea>
+            </div>
+            <input type="hidden" name="id" value="<?=$board['id']?>">
+            <input type="hidden" name="REQUEST_METHOD" value="PUT">
+            <button type="submit" class="btn btn-success">게시글 수정하기</button>
+
+
+        </form>
+
 
     </div>
 
@@ -148,6 +111,5 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
-
 </body>
 </html>
