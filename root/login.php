@@ -25,13 +25,13 @@
 </head>
 <body class="text-center container">
 
-    <form class="form-signin" action="">
+    <form class="form-signin" action="login/login_action.php" method="post">
         <img class="mb-4" src="image/laptop.svg" alt width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">로그인</h1>
         <label for="inputEmail" class="sr-only">이메일</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+            <input type="email" id="inputEmail" name="email" class="form-control" placeholder="이메일" required autofocus>
         <label for="inputPassword" class="sr-only">비밀번호</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <input type="password" id="inputPassword" name="password"class="form-control" placeholder="비밀번호" required>
         <div class="checkbox mb-3">
             <label>
                 <input type="checkbox" value="remember-me"> Remember me
@@ -39,7 +39,6 @@
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
         <a href="join.php" class="btn btn-lg btn-success btn-block">회원가입</a>
-        <p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
     </form>
 
     <!-- Optional JavaScript -->
