@@ -7,7 +7,7 @@
 
     $title = $_POST['title'];
     $content= $_POST['content'];
-    $name = $_POST['name'];
+    $name = $_SESSION['nickname'];
 
     //sql 문은 오타 하나만 나와도 안되고 에러도 표시도 안남.
     //퀴리문은 신중하게 작성하자!

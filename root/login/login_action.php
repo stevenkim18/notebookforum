@@ -58,7 +58,7 @@
                     if(password_verify($password, $hash_password)) {
 
                         $_SESSION['email'] = $member["email"];
-                        $_SESSION['password'] = $member['password'];
+                        $_SESSION['nickname'] = $member['nickname'];
 
                         ?>
                         <!--모델 해더-->
