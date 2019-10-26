@@ -200,7 +200,8 @@
                                     <div class='float-right'>
                                         <!--자바스크립트 함수의 메게변수를 넘길때 문자열 일때는 "" 를 붙여준다!-->
                                         <!--$comment['contents']가 계속 안넘어 갔는데 "" 붘여주니 넘어감-->
-                                        <button onclick='comment_edit(<?=$comment['id']?>, "<?=$comment['contents']?>")' type='button' class='btn btn-sm btn-link comment_edit'>수정</button>
+                                        <button onclick='comment_edit(<?=$comment['id']?>, "<?=$comment['contents']?>", "<?=$comment['writer']?>", "<?=$comment['created_date']?>")'
+                                                type='button' class='btn btn-sm btn-link'>수정</button>
                                         <button id='comment_delete' type='button' class='btn btn-sm btn-link'>삭제</button>
                                     </div>
                                     <h6 class='card-subtitle text-muted'><?=$comment['writer']?></h6>
