@@ -20,21 +20,22 @@
 
     $comment_list = '';
 
-    while ($comment = $sql->fetch_array()){
-        $comment_list = $comment_list."<div class='card mb-3'>
-                                            <div class='card-body'>
-                                                <div class='float-right'>
-                                                    <a href=''><button type='button' class='btn btn-sm btn-link'>수정</button></a>
-                                                    <a href=''><button type='button' class='btn btn-sm btn-link'>삭제</button></a>
-                                                </div>
-                                                <h6 class='card-subtitle text-muted'>{$comment['writer']}</h6>
-                                                <p class='card-text'>{$comment['contents']}</p>
-                                                <small class='card-text'>{$comment['created_date']}</small>
-                                            </div>
-                                        </div>";
-    }
+//    while ($comment = $sql->fetch_array()){
+//        $comment_list = $comment_list."<div id='comment{$comment['id']}'>
+//                                            <div class='card mb-3'>
+//                                                <div class='card-body'>
+//                                                    <div class='float-right'>
+//                                                        <button onclick='comment_edit({$comment['id']}, {$comment['contents']})' type='button' class='btn btn-sm btn-link comment_edit'>수정</button>
+//                                                        <button id='comment_delete' type='button' class='btn btn-sm btn-link'>삭제</button>
+//                                                    </div>
+//                                                    <h6 class='card-subtitle text-muted'>{$comment['writer']}</h6>
+//                                                    <p class='card-text'>{$comment['contents']}</p>
+//                                                    <small class='card-text'>{$comment['created_date']}</small>
+//                                                </div>
+//                                            </div>
+//                                        </div>";
+//    }
 ?>
-
 <!doctype html>
 <html lang="ko">
 <head>
@@ -63,6 +64,7 @@
     <!--댓글 저장을 ajax로 넘겨주는 js 파일-->
     <script type="text/javascript" src="comment/comment_write.js"></script>
 
+    <script type="text/javascript" src="comment/comment_edit.js"></script>
 
     <title>Document</title>
 </head>
@@ -174,11 +176,12 @@
 
             <!--댓글입력 창-->
             <form>
-                <div class="input-group mb-4">
+                <div class="input-group mb-4 ">
                     <!--php 태그에서 단순 변수만 넣어 줄 때는 <?/*php*/?> 말고 <?/*=*/?> 사용-->
                     <input type="hidden" id="post_num" value="<?=$_GET['id']?>">
                     <input type="hidden" id="nickname" value="<?=$_SESSION['nickname']?>">
-                    <input type="text" id="comment" class="form-control" placeholder="댓글을 입력해주세요">
+                    <!--<input type="text" id="comment" class="form-control" placeholder="댓글을 입력해주세요">-->
+                    <textarea id="comment" class="form-control" rows="3" placeholder="댓글을 입력해주세요"></textarea>
                     <div class="input-group-append">
                         <button id="comment_write" class="btn btn-secondary" type="button">등록</button>
                     </div>
@@ -187,8 +190,41 @@
 
             <!--댓글 내용-->
             <div id="comment_content">
-                <?= $comment_list ?>
+                <? /*= $comment_list */ ?>
+                <?php
+                    while ($comment = $sql->fetch_array()) {
+                        ?>
+                        <div id='comment<?=$comment['id']?>'>
+                            <div class='card mb-3'>
+                                <div class='card-body'>
+                                    <div class='float-right'>
+                                        <!--자바스크립트 함수의 메게변수를 넘길때 문자열 일때는 "" 를 붙여준다!-->
+                                        <!--$comment['contents']가 계속 안넘어 갔는데 "" 붘여주니 넘어감-->
+                                        <button onclick='comment_edit(<?=$comment['id']?>, "<?=$comment['contents']?>")' type='button' class='btn btn-sm btn-link comment_edit'>수정</button>
+                                        <button id='comment_delete' type='button' class='btn btn-sm btn-link'>삭제</button>
+                                    </div>
+                                    <h6 class='card-subtitle text-muted'><?=$comment['writer']?></h6>
+                                    <p class='card-text'><?=$comment['contents']?></p>
+                                    <small class='card-text'><?=$comment['created_date']?></small>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                ?>
             </div>
+                <div class='float-right'>
+                    <button type='button' id="comment_edit_cancel" class='btn btn-sm btn-link'>수정취소</button>
+                </div>
+                <form>
+                    <div class="input-group mb-4 ">
+                        <textarea id="comment_edit_textarea" class="form-control" rows="3" placeholder="댓글을 입력해주세요"></textarea>
+                        <div class="input-group-append">
+                            <button id="comment_edit_action" class="btn btn-secondary" type="button">수정</button>
+                        </div>
+                    </div>
+                </form>
+
 <!--            <div class="card mb-3">-->
 <!--                <div class="card-body">-->
 <!--                    <div class="float-right">-->
