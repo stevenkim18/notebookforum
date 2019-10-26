@@ -11,6 +11,28 @@
 
     // echo $board['title'];
 
+    // 댓글 데이터를 가지고 오는 쿼리문
+    // 최신의 쓴 댓글이 위로 올라오고    --> seq(순서) 는 내림 차순
+    // 대댓글 아래로 오는 경우           --> depth 는 오름 차순으로 정렬
+    $select_query = "SELECT * FROM comment WHERE post_num = {$_GET['id']} ORDER BY seq DESC, depth";
+
+    $sql = mq($select_query);
+
+    $comment_list = '';
+
+    while ($comment = $sql->fetch_array()){
+        $comment_list = $comment_list."<div class='card mb-3'>
+                                            <div class='card-body'>
+                                                <div class='float-right'>
+                                                    <a href=''><button type='button' class='btn btn-sm btn-link'>수정</button></a>
+                                                    <a href=''><button type='button' class='btn btn-sm btn-link'>삭제</button></a>
+                                                </div>
+                                                <h6 class='card-subtitle text-muted'>{$comment['writer']}</h6>
+                                                <p class='card-text'>{$comment['contents']}</p>
+                                                <small class='card-text'>{$comment['created_date']}</small>
+                                            </div>
+                                        </div>";
+    }
 ?>
 
 <!doctype html>
@@ -24,6 +46,23 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
           crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!--공식 jQuery CDN 사이트에 가서 링크를 가지고 와야 작동-->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+    <!--댓글 저장을 ajax로 넘겨주는 js 파일-->
+    <script type="text/javascript" src="comment/comment_write.js"></script>
+
 
     <title>Document</title>
 </head>
@@ -63,7 +102,32 @@
             </div>
 
             <div class="navbar-nav ml-auto justify-content-end">
-                <a class="btn btn-primary" href="login.php">로그인</a>
+                <?php
+                    @session_start();
+                    // 세션에 닉네임이 없을 때
+                    if(!isset($_SESSION['nickname'])) {
+
+                        ?>
+                        <a class="btn btn-primary" href="login.php">로그인</a>
+                        <?php
+                    }
+                    // 세션에 닉네임이 있을 때
+                    else {
+                        ?>
+                        <div class="nav-item avatar dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbar_profile" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <img src="image/user_image.png" width="25px" class="rounded-circle z-depth-0"
+                                     alt="avatar image">
+                                <?= $_SESSION['nickname'] ?>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar_profile">
+                                <a class="dropdown-item" href="login/logout_action.php">로그아웃</a>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                ?>
             </div>
         </div>
     </nav>
@@ -111,43 +175,34 @@
             <!--댓글입력 창-->
             <form>
                 <div class="input-group mb-4">
-                    <input type="text" class="form-control" placeholder="댓글을 입력해주세요">
+                    <!--php 태그에서 단순 변수만 넣어 줄 때는 <?/*php*/?> 말고 <?/*=*/?> 사용-->
+                    <input type="hidden" id="post_num" value="<?=$_GET['id']?>">
+                    <input type="hidden" id="nickname" value="<?=$_SESSION['nickname']?>">
+                    <input type="text" id="comment" class="form-control" placeholder="댓글을 입력해주세요">
                     <div class="input-group-append">
-                        <button class="btn btn-secondary" type="button">등록</button>
+                        <button id="comment_write" class="btn btn-secondary" type="button">등록</button>
                     </div>
                 </div>
             </form>
 
             <!--댓글 내용-->
-            <div class="card mb-3">
-                <div class="card-body">
-                    <div class="float-right">
-                        <a href="#"><button type="button" class="btn btn-sm btn-link">수정</button></a>
-                        <a href="#"><button type="button" class="btn btn-sm btn-link">삭제</button></a>
-                    </div>
-                    <h6 class="card-subtitle text-muted">김승우</h6>
-                    <p class="card-text">댓글 내용</p>
-                </div>
+            <div id="comment_content">
+                <?= $comment_list ?>
             </div>
+<!--            <div class="card mb-3">-->
+<!--                <div class="card-body">-->
+<!--                    <div class="float-right">-->
+<!--                        <a href="#"><button type="button" class="btn btn-sm btn-link">수정</button></a>-->
+<!--                        <a href="#"><button type="button" class="btn btn-sm btn-link">삭제</button></a>-->
+<!--                    </div>-->
+<!--                    <h6 class="card-subtitle text-muted">김승우</h6>-->
+<!--                    <p class="card-text">댓글</p>-->
+<!--                    <small class="card-text">2019-01-01 13:10:21</small>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
 
     </div>
-
-
-
-
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
 
 </body>
 </html>

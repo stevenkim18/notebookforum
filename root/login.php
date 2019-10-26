@@ -20,6 +20,8 @@
             margin: auto;
         }
     </style>
+    <!--placeholder를 위로 띄우러고 사용 --> 적용 안됨-->
+    <link href="../css/floating-labels.css" rel="stylesheet">
 
     <title>노트북 포럼:로그인</title>
 </head>
@@ -28,8 +30,10 @@
     <form class="form-signin" action="login/login_action.php" method="post">
         <img class="mb-4" src="image/laptop.svg" alt width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">로그인</h1>
-        <label for="inputEmail" class="sr-only">이메일</label>
+        <div class="form-label-group">
+            <label for="inputEmail" class="sr-only">이메일</label>
             <input type="email" id="inputEmail" name="email" class="form-control" placeholder="이메일" required autofocus>
+        </div>
         <label for="inputPassword" class="sr-only">비밀번호</label>
             <input type="password" id="inputPassword" name="password"class="form-control" placeholder="비밀번호" required>
         <div class="checkbox mb-3">

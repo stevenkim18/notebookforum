@@ -83,8 +83,7 @@
 
     $list ='';
 
-    // 한페이지의 게시물을 저장하는
-    $post_count=0;
+//    $post_count=0;
 
     while ($board = $sql->fetch_array()){
         $list = $list."<tr>
@@ -94,7 +93,7 @@
                             <td>{$board['created_date']}</td>  
                             <td>{$board['views']}</td>      
                        </tr>";
-        $post_count++;
+        //    $post_count++;
     }
     //echo $post_count;
 
@@ -152,7 +151,31 @@
             </div>
 
             <div class="navbar-nav ml-auto justify-content-end">
-                <a class="btn btn-primary" href="login.php">로그인</a>
+                <?php
+                    @session_start();
+                    // 세션에 닉네임이 없을 때
+                    if(!isset($_SESSION['nickname'])) {
+                        ?>
+                        <a class="btn btn-primary" href="login.php">로그인</a>
+                        <?php
+                    }
+                    // 세션에 닉네임이 있을 때
+                    else {
+                        ?>
+                        <div class="nav-item avatar dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbar_profile" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <img src="image/user_image.png" width="25px" class="rounded-circle z-depth-0"
+                                     alt="avatar image">
+                                <?= $_SESSION['nickname'] ?>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar_profile">
+                                <a class="dropdown-item" href="login/logout_action.php">로그아웃</a>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                ?>
             </div>
         </div>
     </nav>
