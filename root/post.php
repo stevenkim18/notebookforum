@@ -214,7 +214,9 @@
                     }
                 ?>
             </div>
-                <div class='float-right'>
+
+
+                <!--<div class='float-right'>
                     <button type='button' id="comment_edit_cancel" class='btn btn-sm btn-link'>수정취소</button>
                 </div>
                 <form>
@@ -224,19 +226,19 @@
                             <button id="comment_edit_action" class="btn btn-secondary" type="button">수정</button>
                         </div>
                     </div>
-                </form>
+                </form>-->
 
-<!--            <div class="card mb-3">-->
-<!--                <div class="card-body">-->
-<!--                    <div class="float-right">-->
-<!--                        <a href="#"><button type="button" class="btn btn-sm btn-link">수정</button></a>-->
-<!--                        <a href="#"><button type="button" class="btn btn-sm btn-link">삭제</button></a>-->
-<!--                    </div>-->
-<!--                    <h6 class="card-subtitle text-muted">김승우</h6>-->
-<!--                    <p class="card-text">댓글</p>-->
-<!--                    <small class="card-text">2019-01-01 13:10:21</small>-->
-<!--                </div>-->
-<!--            </div>-->
+            <!--<div class="card mb-3">
+                <div class="card-body">
+                    <div class="float-right">
+                        <a href="#"><button type="button" class="btn btn-sm btn-link">수정</button></a>
+                        <a href="#"><button type="button" class="btn btn-sm btn-link">삭제</button></a>
+                    </div>
+                    <h6 class="card-subtitle text-muted">김승우</h6>
+                    <p class="card-text">댓글</p>
+                    <small class="card-text">2019-01-01 13:10:21</small>
+                </div>
+            </div>-->
         </div>
 
     </div>
