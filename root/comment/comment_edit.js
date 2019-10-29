@@ -35,7 +35,7 @@ function comment_edit_cancel(comment_id, comment_contents, comment_writer, comme
         html += "       <div class='card-body'>";
         html += "          <div class='float-right'>";
         html += "              <button onclick='comment_edit("+comment_id+", \""+comment_contents+"\", \""+comment_writer+"\", \""+comment_created_date+"\")' type='button' class='btn btn-sm btn-link'>수정</button>";
-        html += "              <button id='comment_delete' type='button' class='btn btn-sm btn-link'>삭제</button>";
+        html += "              <button onclick='comment_delete("+comment_id+")' type='button' class='btn btn-sm btn-link'>삭제</button>";
         html += "          </div>";
         html += "          <h6 class='card-subtitle text-muted'>"+comment_writer+"</h6>";
         html += "          <p class='card-text'>"+comment_contents+"</p>";
@@ -61,11 +61,10 @@ function comment_edit_action(comment_id) {
         type : 'post',
         dataType : 'html',          // 이번에는 dataType을 text로 하니까 안넘오고 'html' 로 하기 넘어옴.. ajax 이상함..
         url: 'comment/comment_edit_action.php',
-        data : {"id" : comment_id, "contents" : $("#comment_edit_textarea").val()
-        },
+        data : {"id" : comment_id, "contents" : $("#comment_edit_textarea").val()},
 
         success : function (text) {
-            console.log("성공");
+            console.log("댓글 수정 성공");
             console.log(text);
 
             // php 파일에 넘어온 댓글 상자 html을 수정 댓글폼에 덮어 씌움.
@@ -74,7 +73,7 @@ function comment_edit_action(comment_id) {
         },
 
         error: function (text) {
-            console.log("실패");
+            console.log("댓글 수정 실패");
         }
 
     });

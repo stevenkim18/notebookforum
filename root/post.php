@@ -64,7 +64,11 @@
     <!--댓글 저장을 ajax로 넘겨주는 js 파일-->
     <script type="text/javascript" src="comment/comment_write.js"></script>
 
+    <!--댓글 수정 js 파일-->
     <script type="text/javascript" src="comment/comment_edit.js"></script>
+
+    <!--댓글 삭제 js 파일-->
+    <script type="text/javascript" src="comment/comment_delete.js"></script>
 
     <title>Document</title>
 </head>
@@ -202,7 +206,7 @@
                                         <!--$comment['contents']가 계속 안넘어 갔는데 "" 붘여주니 넘어감-->
                                         <button onclick='comment_edit(<?=$comment['id']?>, "<?=$comment['contents']?>", "<?=$comment['writer']?>", "<?=$comment['created_date']?>")'
                                                 type='button' class='btn btn-sm btn-link'>수정</button>
-                                        <button id='comment_delete' type='button' class='btn btn-sm btn-link'>삭제</button>
+                                        <button onclick="comment_delete(<?=$comment['id']?>)" type='button' class='btn btn-sm btn-link'>삭제</button>
                                     </div>
                                     <h6 class='card-subtitle text-muted'><?=$comment['writer']?></h6>
                                     <p class='card-text'><?=$comment['contents']?></p>
