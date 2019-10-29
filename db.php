@@ -8,7 +8,8 @@
 
     // db에 mysql을 연결
     $db = new mysqli("192.168.0.56", "a11882", "Rlatmddn18!", 'notebookforum');
-
+    //a11882
+    //Rlatmddn18!
 
     // db문자열 utf-8 인코딩
     $db->set_charset("utf8");

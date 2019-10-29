@@ -5,9 +5,9 @@
 
     include "../../db.php";
 
-    $post_num = $_POST['post_num'];
-    $nickname = $_POST['nickname'];
-    $comment = $_POST['comment'];
+    $post_num = $_POST['post_num'];     // 게시물 번호
+    $nickname = $_POST['nickname'];     // 개사물 작성자
+    $comment = $_POST['comment'];       // 댓글 내용
 
     // 새로운 댓글 일때
 
@@ -29,7 +29,7 @@
     $sql = mq($insert_query);
     
     // 새로 갱신 댓글 리스트 불러오기
-    $select_query = "SELECT * FROM comment WHERE post_num = $post_num ORDER BY seq DESC, depth";
+    $select_query = "SELECT * FROM comment WHERE post_num = {$post_num} ORDER BY seq DESC, depth";
 
     $sql = mq($select_query);
 

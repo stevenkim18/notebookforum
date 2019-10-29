@@ -20,7 +20,7 @@
             margin: auto;
         }
     </style>
-    <!--placeholder를 위로 띄우러고 사용 --> 적용 안됨-->
+    <!--placeholder를 위로 띄우러고 사용 적용 안됨-->
     <link href="../css/floating-labels.css" rel="stylesheet">
 
     <title>노트북 포럼:로그인</title>
