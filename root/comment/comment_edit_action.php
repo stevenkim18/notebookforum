@@ -27,7 +27,7 @@
                                     <div class='card-body'>
                                         <div class='float-right'>
                                         <button onclick='comment_edit({$comment['id']}, \"{$comment['contents']}\", \"{$comment['writer']}\", \"{$comment['created_date']}\")' type='button' class='btn btn-sm btn-link'>수정</button>
-                                        <button id='comment_delete' type='button' class='btn btn-sm btn-link'>삭제</button>
+                                        <button onclick='comment_delete({$comment['id']})' type='button' class='btn btn-sm btn-link'>삭제</button>
                                         </div>
                                     <h6 class='card-subtitle text-muted'>{$comment['writer']}</h6>
                                     <p class='card-text'>{$comment['contents']}</p>
